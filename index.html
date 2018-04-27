@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+</head>
+<body>
+ <script type="text/javascript">
+ 	/*function queryURL(url){
+	    var arr1 = url.split("?");
+	    var params = arr1[1].split("&");//进行分割成数组
+	    var obj = {};//声明对象
+	    for(var i=0;i<params.length;i++){
+	        var param = params[i].split("=");//进行分割成数组
+	        obj[param[0]] = param[1];//为对象赋值
+	    }
+	    return obj;
+	}
+	var a = queryURL("http://www.taobao.com/index.php?key0=0&key1=1&key2=2");
+	console.log(typeof a);//输出结果为：object；
+	console.log(a.key0);//输出结果为：0；
+	console.log(a.key1);*/
+	function parseURL(url) { 
+		var a = document.createElement('a'); 
+		a.href = url; 
+		return { 
+			source: url, 
+			protocol: a.protocol.replace(':',''), 
+			host: a.hostname, 
+			port: a.port, 
+			query: a.search, 
+			params: (function(){ 
+				var ret = {}, 
+				seg = a.search.replace(/^\?/,'').split('&'), 
+				len = seg.length, i = 0, s; 
+				for (;i<len;i++) { 
+					if (!seg[i]) { continue; } 
+					s = seg[i].split('='); 
+					ret[s[0]] = s[1]; 
+				} 
+				return ret; 
+			})(), 
+			file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1], 
+			hash: a.hash.replace('#',''), 
+			path: a.pathname.replace(/^([^\/])/,'/$1'), 
+			relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1], 
+			segments: a.pathname.replace(/^\//,'').split('/') 
+		}; 
+	}
+	var myURL = parseURL('http://abc.com:8080/dir/index.html?id=255&m=hello#top'); 
+	myURL.file;  
+	console.log(myURL.file)// = 'index.html'
+	myURL.hash;
+	console.log(myURL.hash) // = 'top' 
+	myURL.host;  
+	console.log(myURL.host)// = 'abc.com'
+	myURL.query;  
+	console.log(myURL.query)// = '?id=255&m=hello'
+	myURL.params; 
+	console.log(myURL.params)// = Object = { id: 255, m: hello } 
+	myURL.path; 
+	console.log(myURL.path)// = '/dir/index.html' 
+	myURL.segments;  
+	console.log(myURL.segments)// = Array = ['dir', 'index.html']
+	myURL.port; 
+	console.log(myURL.port)// = '8080' 
+	myURL.protocol;  
+	console.log(myURL.protocol)// = 'http'
+	myURL.source;
+	console.log(myURL.source) // = 'http://abc.com:8080/dir/index.html?id=255&m=hello#top' 
+ </script>
+</body>
+</html>
